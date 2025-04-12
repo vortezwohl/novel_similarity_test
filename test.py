@@ -18,6 +18,9 @@ negatives_path = './data/negative'
 for filename in get_files(negatives_path):
     negatives.append((filename, read_file(os.path.join(negatives_path, filename))))
 
+min_len = min(len(negatives), len(positives))
+positives = positives[:min_len]
+negatives = negatives[:min_len]
 _all = positives + negatives
 
 print(len(positives))
@@ -57,7 +60,6 @@ if __name__ == '__main__':
         diffs.sort(key=lambda x: x[2])
         # 去掉自己
         diffs = diffs[1:]
-        # _split = min(len(positives), len(negatives))
         _split = 20
         pp(diffs[:_split])
         confidence = len([x for x in diffs[:_split] if x[1]])/float(_split)
