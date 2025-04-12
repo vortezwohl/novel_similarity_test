@@ -1,7 +1,7 @@
 import jieba
 import spacy
 
-ner_model = spacy.load("zh_core_web_trf")
+ner_model = spacy.load("zh_core_web_sm")
 
 
 def split_words(text: str, stopwords: list) -> list:
