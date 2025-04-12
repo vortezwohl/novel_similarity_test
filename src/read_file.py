@@ -2,8 +2,15 @@ import os
 
 
 def read_file(path: str, encoding: str = 'utf-8') -> str:
-    with open(path, mode='r', encoding=encoding) as f:
-        return f.read()
+    try:
+        with open(path, mode='r', encoding=encoding) as f:
+            return f.read()
+    except UnicodeDecodeError:
+        try:
+            with open(path, mode='r', encoding='gbk') as f:
+                return f.read()
+        except UnicodeDecodeError:
+            pass
 
 
 def get_files(path: str) -> list:
