@@ -3,6 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 import jieba
 import spacy
+import openai
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -42,23 +43,30 @@ def llm_based_ner(text: str) -> list:
         '系统指令设定': system_prompt,
         '任务目标': '请你仔细阅读[文段], 找出文段中所提及的所有命名实体(角色), 包括主角, 配角.'
     }
-    response = openai_client.chat.completions.create(
-        model=llm,
-        messages=[
-            {'role': 'user', 'content': json.dumps(prompt, ensure_ascii=False)},
-            {'role': 'system', 'content': json.dumps(system_prompt, ensure_ascii=False)},
-        ],
-        temperature=0.1,
-        top_p=0.2
-    ).choices[0].message.content
-    names = json.loads(response[response.find('['): response.find(']') + 1])
-    print('GPT NER:', names)
-    return names
+    while True:
+        try:
+            response = openai_client.chat.completions.create(
+                model=llm,
+                messages=[
+                    {'role': 'user', 'content': json.dumps(prompt, ensure_ascii=False)},
+                    {'role': 'system', 'content': json.dumps(system_prompt, ensure_ascii=False)},
+                ],
+                temperature=0.1,
+                top_p=0.2
+            ).choices[0].message.content
+            names = json.loads(response[response.find('['): response.find(']') + 1])
+            print('GPT NER:', names)
+            return names
+        except json.decoder.JSONDecodeError:
+            ...
+        except openai.InternalServerError:
+            ...
 
 
 def ner(text: str) -> list:
     names = []
     _split = int(len(text) / 10000)
+    print('Split:', _split)
     _inputs = []
     for i in range(_split):
         _inputs.append(text[i*10000:(i+1)*10000])
