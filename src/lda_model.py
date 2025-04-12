@@ -6,7 +6,7 @@ import numpy as np
 
 from src.preprocess import split_words
 
-num_topics = 12
+num_topics = 11
 min_p = 1e-12
 cwd = os.path.dirname(os.path.abspath(__file__))
 

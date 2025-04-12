@@ -54,7 +54,7 @@ def check(names: list):
         '限制': '不要提取人名'
     }
     non_names = llm_invoke(prompt, system_prompt)
-    print('These arent names:', non_names)
+    # print('These arent names:', non_names)
     for non_name in non_names:
         if non_name in names:
             names.remove(non_name)
@@ -83,7 +83,7 @@ def llm_based_ner(text: str, field: str = '网文') -> list:
     }
     names = llm_invoke(prompt, system_prompt)
     names = check(names)
-    print('Names Found:', names)
+    # print('Names Found:', names)
     return names
 
 
@@ -91,7 +91,7 @@ def ner(text: str) -> list:
     names = []
     chunk_size = 1600
     _split = int(len(text) / chunk_size) + 1
-    print('Split:', _split)
+    # print('Split:', _split)
     _inputs = []
     for i in range(_split):
         _inputs.append(text[i*chunk_size:(i+1)*chunk_size])
