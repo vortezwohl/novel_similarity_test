@@ -12,9 +12,10 @@ cwd = os.path.dirname(os.path.abspath(__file__))
 
 with open(f'{cwd}/../data/stopwords', encoding='utf-8') as _f:
     stopwords = _f.readlines()
+    stopwords = [x.replace('\n', '') for x in stopwords]
 
-lda_model = LdaModel.load(f'{cwd}/../model/lda/lda_model.pkl')
-dictionary = Dictionary.load(f'{cwd}/../model/lda/lda_model.pkl.id2word')
+lda_model = LdaModel.load(f'{cwd}/../model/lda/lda_model')
+dictionary = Dictionary.load(f'{cwd}/../model/lda/lda_model.id2word')
 
 
 def predict_topics(_document: str, _model: LdaModel = lda_model, _dictionary: Dictionary = dictionary,
