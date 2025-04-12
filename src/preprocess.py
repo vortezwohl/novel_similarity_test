@@ -103,7 +103,8 @@ def ner(text: str) -> list:
 
 
 def split_words(text: str, stopwords: list) -> list:
-    known_names = ner(text)
+    # known_names = ner(text)
+    known_names = []
     for w in stopwords:
         text = text.replace(w, '_')
     for n in known_names:
