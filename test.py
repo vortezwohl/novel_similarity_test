@@ -20,16 +20,18 @@ print(len(positives))
 print(len(negatives))
 print(len(_all))
 
-sample = negatives[0]
+samples = _all
 
 diffs = []
-for doc in _all:
-    pass_flag_doc = True
-    if doc in negatives:
-        pass_flag_doc = False
-    _diff = kl_divergence_between_texts(sample[1], doc[1])
-    print(f'Diff from "{sample[0]}" to "{doc[0]}"({pass_flag_doc}):', _diff)
-    diffs.append((doc[0], pass_flag_doc, _diff))
-
-diffs.sort(key=lambda x: x[2])
-pp(diffs)
+for sample in samples:
+    for doc in _all:
+        pass_flag_doc = True
+        if doc in negatives:
+            pass_flag_doc = False
+        _diff = kl_divergence_between_texts(sample[1], doc[1])
+        print(f'diff("{sample[0]}", "{doc[0]}")={_diff}')
+        diffs.append((doc[0], pass_flag_doc, _diff))
+    diffs.sort(key=lambda x: x[2])
+    _split = 10
+    pp(diffs[:_split])
+    print(f'pass_rate("{sample[0]}")={len([x for x in diffs if x[1]])/float(_split)}')
