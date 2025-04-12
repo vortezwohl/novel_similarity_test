@@ -1,4 +1,5 @@
 import json
+from concurrent.futures import ThreadPoolExecutor
 
 import jieba
 import spacy
@@ -57,7 +58,12 @@ def llm_based_ner(text: str) -> list:
 
 def ner(text: str) -> list:
     names = []
-    # names.extend(spacy_based_ner(text))
-    for i in range(7):
-        names.extend(llm_based_ner(text[i*10000:(i+1)*10000]))
+    _split = int(len(text) / 10000)
+    _inputs = []
+    for i in range(_split):
+        _inputs.append(text[i*10000:(i+1)*10000])
+    with ThreadPoolExecutor(max_workers=_split) as executor:
+        tmp_names = list(executor.map(llm_based_ner, _inputs))
+    for _names in tmp_names:
+        names.extend(_names)
     return list(set(names))
