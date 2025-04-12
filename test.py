@@ -32,6 +32,6 @@ for sample in samples:
         print(f'diff("{sample[0]}", "{doc[0]}")={_diff}')
         diffs.append((doc[0], pass_flag_doc, _diff))
     diffs.sort(key=lambda x: x[2])
-    _split = 10
+    _split = min(len(positives), len(negatives))
     pp(diffs[:_split])
-    print(f'pass_rate("{sample[0]}")={len([x for x in diffs if x[1]])/float(_split)}')
+    print(f'pass_rate("{sample[0]}")={len([x for x in diffs[:_split] if x[1]])/float(_split)}')
