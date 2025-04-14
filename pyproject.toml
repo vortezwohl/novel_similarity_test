@@ -18,4 +18,8 @@ dependencies = [
     "pyldavis>=3.4.1",
     "scikit-learn>=1.6.1",
     "spacy>=3.8.5",
+    "text-similarity",
 ]
+
+[tool.uv.sources]
+text-similarity = { git = "https://github.com/vortezwohl/teximilar.git" }
